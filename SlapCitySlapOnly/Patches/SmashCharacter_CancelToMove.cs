@@ -11,7 +11,9 @@ namespace SlapCitySlapOnly.Patches
         static void Prefix(SmashCharacter __instance, ref string moveId)
         {
             // Only Fishbunjin
-            if (__instance.gameObject.name.Split('(')[0].ToLower() != "fishbunjin") return;
+            var character = SmashLoader.Instance.GetPlayer(__instance.playerindex).currentlyCharacter;
+            if (character != "fishbunjin") return;
+
             if (bannedMoves.Contains(moveId)) moveId = "jab";
         }
 

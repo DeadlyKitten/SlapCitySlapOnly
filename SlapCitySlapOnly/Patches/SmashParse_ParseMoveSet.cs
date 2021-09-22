@@ -1,5 +1,5 @@
-﻿using HarmonyLib;
-using MiniJSON;
+﻿using DiffMatchPatch;
+using HarmonyLib;
 using Smash;
 using System.Collections.Generic;
 using System.IO;
@@ -13,27 +13,27 @@ namespace SlapCitySlapOnly.Patches
     [HarmonyPatch(typeof(SmashParse), "ParseMoveSet")]
     class SmashParse_ParseMoveSet
     {
-        static void Postfix(string moveset, ref SmashCharacter.IdMove[] __result)
+        static void Prefix(ref string moveset, ref SmashCharacter.IdMove[] __result)
         {
             if (!(CreateMD5(moveset) == FISH_MOVESET_HASH)) return;
 
-            for (var i  =  0; i <  __result.Length; i++)
+            var assembly = Assembly.GetExecutingAssembly();
+            var resourceName = "SlapCitySlapOnly.Resources.ClutchableSlap.patch";
+
+            List<DiffMatchPatch.Patch> patches;
+            var patcher = new diff_match_patch();
+
+            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+            using (StreamReader reader = new StreamReader(stream))
             {
-                if (__result[i].uid != 23) continue;
-
-                string newMove;
-
-                var assembly = Assembly.GetExecutingAssembly();
-                var resourceName = "SlapCitySlapOnly.Resources.ClutchableSlap.json";
-
-                using (Stream stream = assembly.GetManifestResourceStream(resourceName))
-                using (StreamReader reader = new StreamReader(stream))
-                {
-                    newMove = reader.ReadToEnd();
-                }
-
-                __result[i] = SmashCharacter.IdMove.Parse(Json.Deserialize(newMove, true) as Dictionary<string,  object>);
+                var json = reader.ReadToEnd();
+                patches = patcher.patch_fromText(json);
             }
+
+            moveset = patcher.patch_apply(patches, moveset)[0] as string;
+
+            return;
+
         }
 
         public static string CreateMD5(string input)

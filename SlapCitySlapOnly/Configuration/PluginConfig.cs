@@ -81,8 +81,8 @@ namespace SlapCitySlapOnly.Configuration
 
         static void Reload()
         {
-            Plugin.Instance.Config.Reload();
-            IsEnabled = enabled.Value;
+            Plugin.Instance?.Config?.Reload();
+            IsEnabled = (enabled == null) ? false : enabled.Value;
         }
     }
 }

@@ -16,7 +16,7 @@ namespace SlapCitySlapOnly.Patches
     [HarmonyPatch(typeof(SmashParse), "ParseMoveSet")]
     class SmashParse_ParseMoveSet
     {
-        static void Prefix(ref string moveset, ref SmashCharacter.IdMove[] __result)
+        static void Prefix(ref string moveset)
         {
             if (!(CreateMD5(moveset) == FISH_MOVESET_HASH)) return;
 

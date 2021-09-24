@@ -6,5 +6,5 @@
 using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Harmony Patch", Scope = "member", Target = "~M:SlapCitySlapOnly.Patches.SmashCharacter_CancelToMove.Prefix(Smash.SmashCharacter,System.String@)")]
-[assembly: SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Harmony Patch", Scope = "member", Target = "~M:SlapCitySlapOnly.Patches.SmashParse_ParseMoveSet.Postfix(System.String,Smash.SmashCharacter.IdMove[]@)")]
+[assembly: SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Harmony Patch", Scope = "member", Target = "~M:SlapCitySlapOnly.Patches.SmashParse_ParseMoveSet.Prefix(System.String@)")]
 [assembly: SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Unity Event Function", Scope = "member", Target = "~M:SlapCitySlapOnly.Plugin.Awake")]

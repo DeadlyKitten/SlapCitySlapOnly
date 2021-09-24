@@ -20,6 +20,12 @@ namespace SlapCitySlapOnly.Patches
         {
             if (!(CreateMD5(moveset) == FISH_MOVESET_HASH)) return;
 
+            if (cachedMoveset != null)
+            {
+                moveset = cachedMoveset;
+                return;
+            }
+
             var assembly = Assembly.GetExecutingAssembly();
             var resourceName = "SlapCitySlapOnly.Resources.ClutchableSlapPatch.json";
 
@@ -32,14 +38,13 @@ namespace SlapCitySlapOnly.Patches
                 patch = new JsonPatchDocument(JsonConvert.DeserializeObject<List<Operation>>(json), new DefaultContractResolver());
             }
 
-            Plugin.LogDebug(patch.ToString());
-
             object obj = JsonConvert.DeserializeObject(moveset);
             patch.ApplyTo(obj);
             moveset = JsonConvert.SerializeObject(obj);
+            cachedMoveset = moveset;
         }
 
-        public static string CreateMD5(string input)
+        static string CreateMD5(string input)
         {
             using (var md5 = MD5.Create())
             {
@@ -56,5 +61,6 @@ namespace SlapCitySlapOnly.Patches
         }
 
         static readonly string FISH_MOVESET_HASH = "D5A75867729283BE2805B441582E37FA";
+        static string cachedMoveset;
     }
 }
